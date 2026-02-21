@@ -78,27 +78,78 @@ class AttentionAds_Calculator_Widget extends \Elementor\Widget_Base {
             'fields' => $repeater->get_controls(),
             'title_field' => '{{{ label }}}',
             'default' => [
-                ['key' => 'ugc_video', 'label' => 'UGC Video', 'unit_label' => 'per video', 'base_price_gbp' => 200, 'styles' => "Standard UGC|1\nCreator-led / scripted|1.1\nPerformance-optimised / hooks + variations|1.25"],
-                ['key' => 'motion_ad', 'label' => 'Motion Ad', 'unit_label' => 'per asset', 'base_price_gbp' => 400, 'styles' => "Basic animation|1\nAdvanced motion / transitions|1.2"],
-                ['key' => 'graphic_ad', 'label' => 'Graphic Ad', 'unit_label' => 'per asset', 'base_price_gbp' => 150, 'styles' => "Standard|1"],
-                ['key' => 'video_edit', 'label' => 'Video Edit', 'unit_label' => 'per edit', 'base_price_gbp' => 180, 'styles' => "Standard|1"],
-                ['key' => 'creative_brief', 'label' => 'Creative Brief', 'unit_label' => 'per brief', 'base_price_gbp' => 120, 'styles' => "Standard|1"],
-                ['key' => 'out_of_home', 'label' => 'Out of Home', 'unit_label' => 'per asset', 'base_price_gbp' => 350, 'styles' => "Standard|1"],
-                ['key' => 'audio_for_ads', 'label' => 'Audio for Ads', 'unit_label' => 'per asset', 'base_price_gbp' => 1000, 'styles' => "Standard|1"],
+                ['key' => 'creator', 'label' => 'Creator Ads', 'unit_label' => 'per ad', 'base_price_gbp' => 350, 'styles' => "Standard|1"],
+                ['key' => 'graphic', 'label' => 'Graphic Ads', 'unit_label' => 'per ad', 'base_price_gbp' => 150, 'styles' => "Standard|1"],
+                ['key' => 'motion', 'label' => 'Motion Ads', 'unit_label' => 'per ad', 'base_price_gbp' => 400, 'styles' => "Standard|1"],
+                ['key' => 'ooh', 'label' => 'Out of Home (OOH)', 'unit_label' => 'per ad', 'base_price_gbp' => 350, 'styles' => "Standard|1"],
             ],
-        ]);
-
-        $this->add_control('revision_fee_gbp', [
-            'label' => __('Reversion Fee per Asset (GBP)', 'attentionads'),
-            'type' => \Elementor\Controls_Manager::NUMBER,
-            'default' => 30,
-            'min' => 0,
         ]);
 
         $this->add_control('credits_message', [
             'label' => __('Credits Message', 'attentionads'),
             'type' => \Elementor\Controls_Manager::TEXT,
-            'default' => 'Credits never expire and can be used flexibly.',
+            'default' => 'Credits never expire. Use them whenever you\'re ready.',
+        ]);
+
+        $this->add_control('bulk_message', [
+            'label' => __('Bulk Saving Message', 'attentionads'),
+            'type' => \Elementor\Controls_Manager::TEXTAREA,
+            'default' => 'Purchase in bulk and <strong>save up to 30%</strong>. Use up your ad credits anytime, credits never expire.',
+        ]);
+
+        $this->end_controls_section();
+
+        $this->start_controls_section(
+            'section_style',
+            [
+                'label' => __('Style', 'attentionads'),
+                'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $this->add_control('container_background', [
+            'label' => __('Container Background', 'attentionads'),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'default' => '#f6eef9',
+            'selectors' => [
+                '{{WRAPPER}} .attentionads-calculator' => '--aa-container-bg: {{VALUE}}',
+            ],
+        ]);
+
+        $this->add_control('card_background', [
+            'label' => __('Card Background', 'attentionads'),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'default' => '#ffffff',
+            'selectors' => [
+                '{{WRAPPER}} .attentionads-calculator' => '--aa-card-bg: {{VALUE}}',
+            ],
+        ]);
+
+        $this->add_control('accent_color', [
+            'label' => __('Accent Color', 'attentionads'),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'default' => '#7c5cff',
+            'selectors' => [
+                '{{WRAPPER}} .attentionads-calculator' => '--aa-accent: {{VALUE}}',
+            ],
+        ]);
+
+        $this->add_control('button_background', [
+            'label' => __('Primary Button Background', 'attentionads'),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'default' => '#000000',
+            'selectors' => [
+                '{{WRAPPER}} .attentionads-calculator' => '--aa-button-bg: {{VALUE}}',
+            ],
+        ]);
+
+        $this->add_control('button_text_color', [
+            'label' => __('Primary Button Text', 'attentionads'),
+            'type' => \Elementor\Controls_Manager::COLOR,
+            'default' => '#ffffff',
+            'selectors' => [
+                '{{WRAPPER}} .attentionads-calculator' => '--aa-button-text: {{VALUE}}',
+            ],
         ]);
 
         $this->end_controls_section();
@@ -141,42 +192,73 @@ class AttentionAds_Calculator_Widget extends \Elementor\Widget_Base {
 
         $widget_settings = [
             'adTypes' => $ad_types,
-            'revisionFeeGbp' => (float) $settings['revision_fee_gbp'],
             'currencies' => [
                 'GBP' => ['symbol' => '£', 'rate' => 1],
-                'USD' => ['symbol' => '$', 'rate' => 1.28],
+                'USD' => ['symbol' => '$', 'rate' => 1.27],
                 'EUR' => ['symbol' => '€', 'rate' => 1.17],
-                'AED' => ['symbol' => 'AED ', 'rate' => 4.70],
-                'AUD' => ['symbol' => 'A$', 'rate' => 1.94],
-            ],
-            'bulkTiers' => [
-                ['min' => 1, 'max' => 5, 'multiplier' => 1, 'label' => 'Base pricing'],
-                ['min' => 6, 'max' => 15, 'multiplier' => 0.9, 'label' => '10% bulk discount applied'],
-                ['min' => 16, 'max' => 30, 'multiplier' => 0.8, 'label' => '20% bulk discount applied'],
-                ['min' => 31, 'max' => null, 'multiplier' => 0.7, 'label' => '30% bulk discount applied'],
+                'AED' => ['symbol' => 'د.إ', 'rate' => 4.66],
+                'AUD' => ['symbol' => 'A$', 'rate' => 1.95],
             ],
             'creditsMessage' => sanitize_text_field($settings['credits_message']),
         ];
         ?>
         <div class="attentionads-calculator" data-calculator-settings='<?php echo wp_json_encode($widget_settings); ?>'>
-            <div class="attentionads-head">
-                <h3><?php esc_html_e('Build Your Ad Package', 'attentionads'); ?></h3>
-                <div class="attentionads-controls">
-                    <label>
-                        <?php esc_html_e('Currency', 'attentionads'); ?>
-                        <select data-role="currency"></select>
-                    </label>
-                    <button type="button" data-role="add-item"><?php esc_html_e('+ Add Ad Type', 'attentionads'); ?></button>
+            <div class="aa-grid">
+                <div class="aa-left">
+                    <h2><?php esc_html_e('Build Your', 'attentionads'); ?><br><?php esc_html_e('Ad Package', 'attentionads'); ?></h2>
+                    <p class="aa-bulk"><?php echo wp_kses_post($settings['bulk_message']); ?></p>
                 </div>
-            </div>
 
-            <div class="attentionads-items" data-role="items"></div>
+                <div class="aa-right">
+                    <div class="aa-top">
+                        <div class="aa-types">
+                            <label><?php esc_html_e('Select Ad Type', 'attentionads'); ?></label>
+                            <div class="aa-tabs" data-role="ad-tabs"></div>
+                        </div>
 
-            <div class="attentionads-summary">
-                <h4><?php esc_html_e('Package Breakdown', 'attentionads'); ?></h4>
-                <div data-role="breakdown"></div>
-                <p class="attentionads-total"><?php esc_html_e('Total:', 'attentionads'); ?> <span data-role="grand-total">£0.00</span></p>
-                <p class="attentionads-credits" data-role="credits-msg"></p>
+                        <div class="aa-currency-wrap">
+                            <label><?php esc_html_e('Choose Currency', 'attentionads'); ?></label>
+                            <select data-role="currency"></select>
+                        </div>
+                    </div>
+
+                    <div class="aa-slider-wrap">
+                        <label><?php esc_html_e('How many ads do you need?', 'attentionads'); ?></label>
+                        <div class="aa-slider">
+                            <input type="range" min="5" max="50" step="5" value="20" data-role="qty">
+                            <div class="aa-bubble" data-role="bubble">20</div>
+                        </div>
+                        <div class="aa-marks">
+                            <span>5</span>
+                            <span>10</span>
+                            <span>25</span>
+                            <span>50</span>
+                        </div>
+                    </div>
+
+                    <div class="aa-cards">
+                        <div class="aa-card">
+                            <small><?php esc_html_e('Number of ads', 'attentionads'); ?></small>
+                            <strong data-role="ads-count">20</strong>
+                        </div>
+
+                        <div class="aa-card">
+                            <small><?php esc_html_e('Price per Ad', 'attentionads'); ?></small>
+                            <strong data-role="unit-price">£0</strong>
+                            <div class="aa-discount" data-role="discount"></div>
+                        </div>
+
+                        <div class="aa-card">
+                            <small><?php esc_html_e('Total Price', 'attentionads'); ?></small>
+                            <strong data-role="total-price">£0</strong>
+                        </div>
+                    </div>
+
+                    <div class="aa-footer">
+                        <p data-role="credits-msg"></p>
+                        <button type="button"><?php esc_html_e('Get Started', 'attentionads'); ?></button>
+                    </div>
+                </div>
             </div>
         </div>
         <?php
