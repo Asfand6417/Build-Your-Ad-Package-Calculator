@@ -1,0 +1,99 @@
+.attentionads-calculator {
+  border: 1px solid #d9dde5;
+  border-radius: 16px;
+  padding: 24px;
+  background: #ffffff;
+  font-family: Inter, Arial, sans-serif;
+  color: #111827;
+}
+
+.attentionads-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.attentionads-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.attentionads-controls select,
+.attentionads-controls button,
+.attentionads-item input,
+.attentionads-item select {
+  border: 1px solid #c5cbd7;
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.attentionads-controls button {
+  background: #111827;
+  color: #fff;
+}
+
+.attentionads-items {
+  display: grid;
+  gap: 14px;
+}
+
+.attentionads-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  background: #f9fafb;
+}
+
+.attentionads-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.attentionads-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.attentionads-meta {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 10px 0;
+  font-size: 13px;
+}
+
+.attentionads-summary {
+  margin-top: 20px;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 16px;
+}
+
+.attentionads-breakdown-row {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 8px;
+  padding: 6px 0;
+}
+
+.attentionads-total {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.attentionads-credits {
+  color: #4b5563;
+  font-size: 14px;
+}
+
+@media (max-width: 800px) {
+  .attentionads-grid,
+  .attentionads-meta,
+  .attentionads-breakdown-row {
+    grid-template-columns: 1fr;
+  }
+}
